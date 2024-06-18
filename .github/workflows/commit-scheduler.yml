@@ -11,6 +11,7 @@ on:
     - cron: '57 16 * * *' # Every day at 12:57am PHT / 16:57 UTC
     - cron: '58 16 * * *' # Every day at 12:58am PHT / 16:58 UTC
     - cron: '59 16 * * *' # Every day at 12:59am PHT / 16:59 UTC
+  workflow_dispatch:
 
 jobs:
   commit:
