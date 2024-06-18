@@ -1,0 +1,40 @@
+name: Auto Commit
+
+on:
+  schedule:
+    - cron: '0 9 * * *'   # Every day at 09:00 UTC
+    - cron: '0 13 * * *'  # Every day at 13:00 UTC
+    - cron: '0 17 * * *'  # Every day at 17:00 UTC
+    - cron: '54 16 * * *' # Every day at 12:54am PHT / 16:54 UTC
+    - cron: '55 16 * * *' # Every day at 12:55am PHT / 16:55 UTC
+    - cron: '56 16 * * *' # Every day at 12:56am PHT / 16:56 UTC
+    - cron: '57 16 * * *' # Every day at 12:57am PHT / 16:57 UTC
+    - cron: '58 16 * * *' # Every day at 12:58am PHT / 16:58 UTC
+    - cron: '59 16 * * *' # Every day at 12:59am PHT / 16:59 UTC
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Make changes
+      run: |
+        echo "$(date)" >> changes.txt
+
+    - name: Get random commit message
+      id: commit_message
+      run: |
+        MESSAGES=("Update data" "Automated changes" "Daily commit" "Routine update" "Sync changes" "Minor adjustments")
+        RANDOM_INDEX=$((RANDOM % ${#MESSAGES[@]}))
+        echo "COMMIT_MESSAGE=${MESSAGES[$RANDOM_INDEX]}" >> $GITHUB_ENV
+
+    - name: Commit changes
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        git add changes.txt
+        git commit -m "$COMMIT_MESSAGE"
+        git push
