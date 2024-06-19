@@ -2,15 +2,10 @@ name: Auto Commit
 
 on:
   schedule:
-    - cron: '0 9 * * *'   # Every day at 09:00 UTC
-    - cron: '0 13 * * *'  # Every day at 13:00 UTC
-    - cron: '0 17 * * *'  # Every day at 17:00 UTC
-    - cron: '54 16 * * *' # Every day at 12:54am PHT / 16:54 UTC
-    - cron: '55 16 * * *' # Every day at 12:55am PHT / 16:55 UTC
-    - cron: '56 16 * * *' # Every day at 12:56am PHT / 16:56 UTC
-    - cron: '57 16 * * *' # Every day at 12:57am PHT / 16:57 UTC
-    - cron: '58 16 * * *' # Every day at 12:58am PHT / 16:58 UTC
-    - cron: '59 16 * * *' # Every day at 12:59am PHT / 16:59 UTC
+    - cron: '3 6 * * *'  # Every day at 02:03 PM PHT / 06:03 AM UTC
+    - cron: '4 6 * * *'  # Every day at 02:04 PM PHT / 06:04 AM UTC
+    - cron: '5 6 * * *'  # Every day at 02:05 PM PHT / 06:05 AM UTC
+    - cron: '6 6 * * *'  # Every day at 02:06 PM PHT / 06:06 AM UTC
   workflow_dispatch:
 
 jobs:
@@ -38,4 +33,4 @@ jobs:
         git config --global user.email 'mersontaguiam7@gmail.com'
         git add changes.txt
         git commit -m "$COMMIT_MESSAGE"
-        git push
+        git push https://${{ secrets.GHA_TOKEN }}@github.com/merson21/stupid-idea.git main
