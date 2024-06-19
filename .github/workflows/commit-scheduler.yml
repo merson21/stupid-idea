@@ -13,13 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Make changes
-      run: |
-        echo "$(date)" >> changes.txt
-
     - name: Get random commit message
       id: commit_message
       run: |
@@ -29,6 +22,9 @@ jobs:
 
     - name: Commit changes
       run: |
+        git clone https://github.com/merson21/stupid-idea.git
+        cd stupid-idea
+        echo "$(date)" >> changes.txt
         git config --global user.name 'merson21'
         git config --global user.email 'mersontaguiam7@gmail.com'
         git add changes.txt
