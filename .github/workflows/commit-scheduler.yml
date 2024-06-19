@@ -17,12 +17,10 @@ jobs:
     - name: Get random commit message
       id: commit_message
       run: |
+        echo "Current UTC time: $(date -u)"
         MESSAGES=("Update data" "Automated changes" "Daily commit" "Routine update" "Sync changes" "Minor adjustments")
         RANDOM_INDEX=$((RANDOM % ${#MESSAGES[@]}))
         echo "COMMIT_MESSAGE=${MESSAGES[$RANDOM_INDEX]}" >> $GITHUB_ENV
-
-    - name: Print current time
-      run: echo "Current UTC time: $(date -u)"
 
     - name: Commit changes
       run: |
