@@ -2,10 +2,11 @@ name: Auto Commit
 
 on:
   schedule:
-    - cron: '3 6 * * *'  # Every day at 02:03 PM PHT / 06:03 AM UTC
-    - cron: '4 6 * * *'  # Every day at 02:04 PM PHT / 06:04 AM UTC
-    - cron: '5 6 * * *'  # Every day at 02:05 PM PHT / 06:05 AM UTC
-    - cron: '6 6 * * *'  # Every day at 02:06 PM PHT / 06:06 AM UTC
+    - cron: '12 6 * * *'  # Every day at 02:12 PM PHT / 06:12 AM UTC
+    - cron: '13 6 * * *'  # Every day at 02:12 PM PHT / 06:12 AM UTC
+    - cron: '14 6 * * *'  # Every day at 02:12 PM PHT / 06:12 AM UTC
+    - cron: '15 6 * * *'  # Every day at 02:12 PM PHT / 06:12 AM UTC
+    - cron: '16 6 * * *'  # Every day at 02:12 PM PHT / 06:12 AM UTC
   workflow_dispatch:
 
 jobs:
