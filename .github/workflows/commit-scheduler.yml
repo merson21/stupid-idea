@@ -21,6 +21,9 @@ jobs:
         RANDOM_INDEX=$((RANDOM % ${#MESSAGES[@]}))
         echo "COMMIT_MESSAGE=${MESSAGES[$RANDOM_INDEX]}" >> $GITHUB_ENV
 
+    - name: Print current time
+      run: echo "Current UTC time: $(date -u)"
+
     - name: Commit changes
       run: |
         git clone https://github.com/merson21/stupid-idea.git
