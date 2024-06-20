@@ -73,5 +73,5 @@ jobs:
         git push https://${GHA_TOKEN}@github.com/merson21/stupid-idea.git main
         
         # Clean up
-        cd ..
-        rm -rf stupid-idea
+        # cd ..
+        # rm -rf stupid-idea
