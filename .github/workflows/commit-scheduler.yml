@@ -25,6 +25,7 @@ jobs:
       uses: crazy-max/ghaction-import-gpg@v6
       with:
         gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+        fingerprint: "14A3A2479000EFD8FC2774130396BACC20342C64"
         git_user_signingkey: true
         git_commit_gpgsign: true
       
@@ -63,8 +64,8 @@ jobs:
         # Configure Git
         git config --global user.name "$GIT_USERNAME"
         git config --global user.email "$GIT_EMAIL"
-        git config --global user.signingkey "$GPG_KEY_ID"
-        git config --global commit.gpgSign true
+        # git config --global user.signingkey "$GPG_KEY_ID"
+        # git config --global commit.gpgSign true
         
         # Commit and push changes
         git add changes.txt
