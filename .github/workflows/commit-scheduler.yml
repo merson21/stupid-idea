@@ -20,6 +20,13 @@ jobs:
         # cat ~/.gnupg/gpg.conf
         echo "$GPG_PRIVATE_KEY" | gpg --batch --import
         echo "$GPG_PRIVATE_KEY" | gpg --batch --import-ownertrust
+
+    - name: Import GPG key
+      uses: crazy-max/ghaction-import-gpg@v6
+      with:
+        gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+        git_user_signingkey: true
+        git_commit_gpgsign: true
       
     - name: Commit changes
       run: |        
