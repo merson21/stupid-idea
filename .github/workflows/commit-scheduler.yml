@@ -18,9 +18,13 @@ jobs:
 
     - name: List keys
       run: gpg -K
+
       
     - name: Sign commit and push changes
       run: |
+        # Configure Git
+        git config --global user.name "$GIT_USERNAME"
+        git config --global user.email "$GIT_EMAIL"
         echo foo > bar.txt
         git add .
         git commit -S -m "This commit is signed!"
