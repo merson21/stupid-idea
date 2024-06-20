@@ -25,6 +25,7 @@ jobs:
         GPG_PRIVATE_KEY="${{ secrets.GPG_PRIVATE_KEY }}"
         GPG_KEY_ID="${{ secrets.GPG_KEY_ID }}"
                 
+        
         # Get random commit message
         MESSAGES=("Update data" "Automated changes" "Daily commit" "Routine update" "Sync changes" "Minor adjustments")
         RANDOM_INDEX=$((RANDOM % ${#MESSAGES[@]}))
@@ -43,22 +44,10 @@ jobs:
         git config --global user.signingkey "$GPG_KEY_ID"
         git config --global commit.gpgsign true
         
-        # GPG setup
-        export GNUPGHOME="${HOME}/.gnupg"
-        mkdir -p "${GNUPGHOME}"
-        chmod 700 "${GNUPGHOME}"
-
-        # Kill any running gpg-agent
-        if pgrep gpg-agent; then
-          killall gpg-agent
-        fi
-
-        # Import the GPG private key
-        echo "${GPG_PRIVATE_KEY}" | gpg --batch --import
-
-        # Ensure GPG agent is running
-        eval "$(gpg-agent --daemon)" > /dev/null 2>&1
+        # Import GPG key
+        # eval "$(gpg-agent --daemon)" > /dev/null 2>&1
         # export GPG_TTY=$(tty)
+        printf "%s" "$GPG_PRIVATE_KEY_CONTENT" | gpg --import
         
         # Commit and push changes
         git add changes.txt
