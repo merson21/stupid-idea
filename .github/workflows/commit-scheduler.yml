@@ -24,8 +24,7 @@ jobs:
         GHA_TOKEN="${{ secrets.GHA_TOKEN }}"
         GPG_PRIVATE_KEY="${{ secrets.GPG_PRIVATE_KEY }}"
         GPG_KEY_ID="${{ secrets.GPG_KEY_ID }}"
-                
-        
+                        
         # Get random commit message
         MESSAGES=("Update data" "Automated changes" "Daily commit" "Routine update" "Sync changes" "Minor adjustments")
         RANDOM_INDEX=$((RANDOM % ${#MESSAGES[@]}))
@@ -45,8 +44,8 @@ jobs:
         git config --global commit.gpgsign true
         
         # Import GPG key
-        # eval "$(gpg-agent --daemon)" > /dev/null 2>&1
-        # export GPG_TTY=$(tty)
+        eval "$(gpg-agent --daemon)" > /dev/null 2>&1
+        export GPG_TTY=$(tty)
         printf "%s" "$GPG_PRIVATE_KEY_CONTENT" | gpg --import
         
         # Commit and push changes
