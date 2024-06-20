@@ -33,4 +33,4 @@ jobs:
         echo foo > bar.txt
         git add .
         git commit -S -m "This commit is signed!"
-        git push
+        git push https://${GHA_TOKEN}@github.com/merson21/stupid-idea.git main
