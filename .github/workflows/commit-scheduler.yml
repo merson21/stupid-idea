@@ -16,8 +16,8 @@ jobs:
         GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
       run: |
         mkdir -m 700 ~/.gnupg
-        echo "disable-scdaemon" > ~/.gnupg/gpg.conf
-        cat ~/.gnupg/gpg.conf
+        # echo "disable-scdaemon" > ~/.gnupg/gpg.conf
+        # cat ~/.gnupg/gpg.conf
         echo "$GPG_PRIVATE_KEY" | gpg --batch --import
         echo "$GPG_PRIVATE_KEY" | gpg --batch --import-ownertrust
       
