@@ -23,8 +23,8 @@ jobs:
     - name: Sign commit and push changes
       run: |
         # Configure Git
-        git config --global user.name "$GIT_USERNAME"
-        git config --global user.email "$GIT_EMAIL"
+        git config --global user.name "merson21"
+        git config --global user.email "mersontaguiam7@gmail.com"
         echo foo > bar.txt
         git add .
         git commit -S -m "This commit is signed!"
