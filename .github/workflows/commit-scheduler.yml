@@ -38,6 +38,10 @@ jobs:
         echo "GHA_TOKEN=${{ secrets.GHA_TOKEN }}" >> $GITHUB_ENV
         
         # Set up GPG
+        mkdir -m 700 ~/.gnupg
+        cat <<EOF >~/.gnupg/gpg.conf
+        disable-scdaemon
+        EOF
         echo "$GPG_PRIVATE_KEY" | gpg --import
         echo "$GPG_PRIVATE_KEY" | gpg --import-ownertrust
 
