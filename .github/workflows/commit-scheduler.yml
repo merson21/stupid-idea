@@ -46,7 +46,7 @@ jobs:
         # Import GPG key
         eval "$(gpg-agent --daemon)" > /dev/null 2>&1
         export GPG_TTY=$(tty)
-        printf "%s" "$GPG_PRIVATE_KEY_CONTENT" | gpg --import
+        printf "%s" "$GPG_PRIVATE_KEY" | gpg --import
         
         # Commit and push changes
         git add changes.txt
