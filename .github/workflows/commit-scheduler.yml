@@ -57,8 +57,8 @@ jobs:
         echo "${GPG_PRIVATE_KEY}" | gpg --batch --import
 
         # Ensure GPG agent is running
-        eval "$(gpg-agent --daemon)" > /dev/null 2>&1
-        export GPG_TTY=$(tty)
+        # eval "$(gpg-agent --daemon)" > /dev/null 2>&1
+        # export GPG_TTY=$(tty)
         
         # Commit and push changes
         git add changes.txt
