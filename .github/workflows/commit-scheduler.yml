@@ -18,3 +18,10 @@ jobs:
 
     - name: List keys
       run: gpg -K
+      
+    - name: Sign commit and push changes
+      run: |
+        echo foo > bar.txt
+        git add .
+        git commit -S -m "This commit is signed!"
+        git push
