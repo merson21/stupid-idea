@@ -15,8 +15,6 @@ jobs:
       with:
         gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
         trust_level: 5
-        passphrase: "14A3A2479000EFD8FC2774130396BACC20342C64"
-        git_user_signingkey: true
         git_commit_gpgsign: true
 
     - name: List keys
