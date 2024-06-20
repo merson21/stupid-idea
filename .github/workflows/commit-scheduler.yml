@@ -55,8 +55,8 @@ jobs:
         COMMIT_MESSAGE=${MESSAGES[$RANDOM_INDEX]}
         
         # Clone the repository
-        git clone $REPO_URL
-        cd stupid-idea
+        # git clone $REPO_URL
+        # cd stupid-idea
         
         # Make changes
         echo "$(date)" >> changes.txt
