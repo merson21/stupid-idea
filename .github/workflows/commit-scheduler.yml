@@ -8,23 +8,50 @@ on:
 jobs:
   commit:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - name: Get random commit message
-      id: commit_message
-      run: |
-        echo "Current UTC time: $(date -u)"
-        MESSAGES=("Update data" "Automated changes" "Daily commit" "Routine update" "Sync changes" "Minor adjustments")
-        RANDOM_INDEX=$((RANDOM % ${#MESSAGES[@]}))
-        echo "COMMIT_MESSAGE=${MESSAGES[$RANDOM_INDEX]}" >> $GITHUB_ENV
-
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
     - name: Commit changes
       run: |
-        git clone https://github.com/merson21/stupid-idea.git
+        #!/bin/bash
+        
+        # Environment Variables
+        REPO_URL="https://github.com/merson21/stupid-idea.git"
+        GIT_USERNAME="merson21"
+        GIT_EMAIL="mersontaguiam7@gmail.com"
+        GPG_PRIVATE_KEY= ${{ secrets.GPG_PRIVATE_KEY }}
+        GPG_KEY_ID="${{ secrets.GPG_KEY_ID }}"
+        GHA_TOKEN="${{ secrets.GHA_TOKEN }}"
+        
+        # Set up GPG
+        echo "$GPG_PRIVATE_KEY" | gpg --import
+        echo "$GPG_PRIVATE_KEY" | gpg --import-ownertrust
+        
+        # Get random commit message
+        MESSAGES=("Update data" "Automated changes" "Daily commit" "Routine update" "Sync changes" "Minor adjustments")
+        RANDOM_INDEX=$((RANDOM % ${#MESSAGES[@]}))
+        COMMIT_MESSAGE=${MESSAGES[$RANDOM_INDEX]}
+        
+        # Clone the repository
+        git clone $REPO_URL
         cd stupid-idea
+        
+        # Make changes
         echo "$(date)" >> changes.txt
-        git config --global user.name 'merson21'
-        git config --global user.email 'mersontaguiam7@gmail.com'
+        
+        # Configure Git
+        git config --global user.name "$GIT_USERNAME"
+        git config --global user.email "$GIT_EMAIL"
+        git config --global user.signingkey "$GPG_KEY_ID"
+        git config --global commit.gpgSign true
+        
+        # Commit and push changes
         git add changes.txt
         git commit -m "$COMMIT_MESSAGE"
-        git push https://${{ secrets.GHA_TOKEN }}@github.com/merson21/stupid-idea.git main
+        git push https://${GHA_TOKEN}@github.com/merson21/stupid-idea.git main
+        
+        # Clean up
+        cd ..
+        rm -rf stupid-idea
