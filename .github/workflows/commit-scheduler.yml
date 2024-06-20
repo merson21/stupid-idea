@@ -20,6 +20,11 @@ jobs:
         GIT_USERNAME="merson21"
         GIT_EMAIL="mersontaguiam7@gmail.com"
         GHA_TOKEN="${{ secrets.GHA_TOKEN }}"
+        GPG_PRIVATE_KEY_CONTENT="${{ secrets.GPG_PRIVATE_KEY }}"
+        GPG_KEY_ID="${{ secrets.GPG_KEY_ID }}"
+                
+        # GPG configuration
+        GPG_KEY_ID="20342C64"  # Replace with your GPG key ID
         
         # Get random commit message
         MESSAGES=("Update data" "Automated changes" "Daily commit" "Routine update" "Sync changes" "Minor adjustments")
@@ -36,10 +41,17 @@ jobs:
         # Configure Git
         git config --global user.name "$GIT_USERNAME"
         git config --global user.email "$GIT_EMAIL"
+        git config --global user.signingkey "$GPG_KEY_ID"
+        git config --global commit.gpgsign true
+        
+        # Import GPG key
+        eval "$(gpg-agent --daemon)" > /dev/null 2>&1
+        export GPG_TTY=$(tty)
+        printf "%s" "$GPG_PRIVATE_KEY_CONTENT" | gpg --import
         
         # Commit and push changes
         git add changes.txt
-        git commit -m "$COMMIT_MESSAGE"
+        git commit -S -m "$COMMIT_MESSAGE"
         git push https://${GHA_TOKEN}@github.com/merson21/stupid-idea.git main
         
         # Clean up
