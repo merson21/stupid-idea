@@ -10,16 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3    
-    - name: Import GPG key
-      id: import_gpg
-      env:
-        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
-      run: |
-        mkdir -m 700 ~/.gnupg
-        # echo "disable-scdaemon" > ~/.gnupg/gpg.conf
-        # cat ~/.gnupg/gpg.conf
-        echo "$GPG_PRIVATE_KEY" | gpg --batch --import
-        echo "$GPG_PRIVATE_KEY" | gpg --batch --import-ownertrust
+    # - name: Import GPG key
+    #   id: import_gpg
+    #   env:
+    #     GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+    #   run: |
+    #     mkdir -m 700 ~/.gnupg
+    #     # echo "disable-scdaemon" > ~/.gnupg/gpg.conf
+    #     # cat ~/.gnupg/gpg.conf
+    #     echo "$GPG_PRIVATE_KEY" | gpg --batch --import
+    #     echo "$GPG_PRIVATE_KEY" | gpg --batch --import-ownertrust
 
     - name: Import GPG key
       uses: crazy-max/ghaction-import-gpg@v6
