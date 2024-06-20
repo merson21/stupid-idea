@@ -12,6 +12,14 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
+    - name: Import GPG key
+      id: import_gpg
+      env:
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+      run: |
+        echo "$GPG_PRIVATE_KEY" | gpg --import
+        echo "$GPG_PRIVATE_KEY" | gpg --import-ownertrust
       
     - name: Commit changes
       run: |
@@ -21,13 +29,8 @@ jobs:
         REPO_URL="https://github.com/merson21/stupid-idea.git"
         GIT_USERNAME="merson21"
         GIT_EMAIL="mersontaguiam7@gmail.com"
-        echo "GPG_PRIVATE_KEY=${{ secrets.GPG_PRIVATE_KEY }}" >> $GITHUB_ENV
-        echo "GPG_KEY_ID=${{ secrets.GPG_KEY_ID }}" >> $GITHUB_ENV
-        echo "GHA_TOKEN=${{ secrets.GHA_TOKEN }}" >> $GITHUB_ENV
-        
-        # Set up GPG
-        echo "$GPG_PRIVATE_KEY" | gpg --import
-        echo "$GPG_PRIVATE_KEY" | gpg --import-ownertrust
+        GPG_KEY_ID="${{ secrets.GPG_KEY_ID }}"
+        GHA_TOKEN="${{ secrets.GHA_TOKEN }}"        
         
         # Get random commit message
         MESSAGES=("Update data" "Automated changes" "Daily commit" "Routine update" "Sync changes" "Minor adjustments")
