@@ -9,18 +9,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    
+    - uses: actions/checkout@v3    
     - name: Import GPG key
       id: import_gpg
       env:
         GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
       run: |
         mkdir -m 700 ~/.gnupg
-        echo "disable-scdaemon" > ~/.gnupg/gpg.conf
+        cat <<EOF >~/.gnupg/gpg.conf
+        disable-scdaemon
+        EOF
         echo "$GPG_PRIVATE_KEY" | gpg --batch --import
         echo "$GPG_PRIVATE_KEY" | gpg --batch --import-ownertrust
-        chmod -R 700 ~/.gnupg
       
     - name: Commit changes
       run: |
