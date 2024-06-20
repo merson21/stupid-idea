@@ -34,12 +34,6 @@ jobs:
         # Make changes
         echo "$(date)" >> changes.txt
         
-        # Configure Git
-        git config --global user.name "$GIT_USERNAME"
-        git config --global user.email "$GIT_EMAIL"
-        git config --global user.signingkey "$GPG_KEY_ID"
-        git config --global commit.gpgsign true
-        
         # GPG setup
         export GNUPGHOME="${HOME}/.gnupg"
         mkdir -p "${GNUPGHOME}"
@@ -68,10 +62,13 @@ jobs:
             echo "Error: Temporary file was removed before import"
             exit 1
         fi
-        
-        # Remove the temporary file
-        rm /tmp/gpg_private_key.asc
-        
+         
+        # Configure Git
+        git config --global user.name "$GIT_USERNAME"
+        git config --global user.email "$GIT_EMAIL"
+        git config --global user.signingkey "$GPG_KEY_ID"
+        git config --global commit.gpgsign true
+               
         # Commit and push changes
         git add changes.txt
         git commit -S -m "$COMMIT_MESSAGE"
