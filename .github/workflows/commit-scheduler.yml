@@ -1,10 +1,8 @@
 name: Auto Commit
-
 on:
   schedule:
     - cron: '0 3 * * *'  
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,7 +14,6 @@ jobs:
         #!/bin/bash
         
         set -e
-
         # Environment Variables
         REPO_URL="https://github.com/merson21/stupid-idea.git"
         GIT_USERNAME="merson21"
@@ -42,17 +39,22 @@ jobs:
         git config --global user.email "$GIT_EMAIL"
         git config --global user.signingkey "$GPG_KEY_ID"
         git config --global commit.gpgsign true
-
-        # Import GPG key
+        
         # GPG setup
         export GNUPGHOME="${HOME}/.gnupg"
         mkdir -p "${GNUPGHOME}"
         chmod 700 "${GNUPGHOME}"
         
-        # Import GPG key
+        # Save GPG private key to a temporary file
+        echo "$GPG_PRIVATE_KEY" > /tmp/gpg_private_key.asc
+        
+        # Import GPG key from the temporary file
         eval "$(gpg-agent --daemon)" > /dev/null 2>&1
         export GPG_TTY=$(tty)
-        printf "%s" "$GPG_PRIVATE_KEY" | gpg --import
+        gpg --import /tmp/gpg_private_key.asc
+        
+        # Remove the temporary file
+        rm /tmp/gpg_private_key.asc
         
         # Commit and push changes
         git add changes.txt
