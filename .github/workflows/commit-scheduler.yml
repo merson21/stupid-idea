@@ -7,16 +7,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
+    # - name: Checkout
+    #   uses: actions/checkout@v4
     
     - name: Auto commit
       run: |
-        #!/bin/bash   
-        chmod +x *
+        #!/bin/bash 
         
         # Environment Variables
-        # REPO_URL="https://github.com/merson21/stupid-idea.git"
+        REPO_URL="https://github.com/merson21/stupid-idea.git"
         GIT_USERNAME="merson21"
         GIT_EMAIL="mersontaguiam7@gmail.com"
         # GPG_PRIVATE_KEY="$(cat secret_key.asc)"
@@ -27,8 +26,9 @@ jobs:
         COMMIT_MESSAGE=${MESSAGES[$RANDOM_INDEX]}
         
         # Clone the repository
-        # git clone $REPO_URL
-        # cd stupid-idea
+        git clone $REPO_URL
+        chmod +x *
+        cd stupid-idea
         
         # Make changes
         echo "$(date)" >> changes.txt
