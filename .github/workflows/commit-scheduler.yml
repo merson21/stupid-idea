@@ -10,9 +10,6 @@ jobs:
     - name: Auto commit
       run: |
         #!/bin/bash   
-
-        #Current directory executable
-        chmod +x *
         
         # Environment Variables
         REPO_URL="https://github.com/merson21/stupid-idea.git"
@@ -27,6 +24,7 @@ jobs:
         # Clone the repository
         git clone $REPO_URL
         cd stupid-idea
+        chmod 700 *
         
         # Make changes
         echo "$(date)" >> changes.txt
