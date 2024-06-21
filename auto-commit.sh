@@ -4,8 +4,8 @@
 REPO_URL="https://github.com/merson21/stupid-idea.git"
 GIT_USERNAME="merson21"
 GIT_EMAIL="mersontaguiam7@gmail.com"
-GHA_TOKEN="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"
-GPG_PRIVATE_KEY_CONTENT="$(cat secret_key.asc)"
+GHA_TOKEN="${{ secrets.GHA_TOKEN }}"
+GPG_PRIVATE_KEY="$(cat secret_key.asc)"
 GPG_KEY_ID="20342C64"
                 
 # Get random commit message
@@ -27,7 +27,7 @@ chmod 700 "${GNUPGHOME}"
 
 # Save GPG private key to a temporary file
 echo "$GPG_PRIVATE_KEY_CONTENT" > /tmp/gpg_private_key.asc
-chmod 700 .
+chmod 700 *
 
 # Check if the temporary file exists
 if [ -f /tmp/gpg_private_key.asc ]; then
