@@ -7,20 +7,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3    
-      
-    - name: Commit changes
+    - name: Auto commit
       run: |
-        #!/bin/bash
+        #!/bin/bash 
         
-        set -e
         # Environment Variables
         REPO_URL="https://github.com/merson21/stupid-idea.git"
         GIT_USERNAME="merson21"
         GIT_EMAIL="mersontaguiam7@gmail.com"
-        GHA_TOKEN="${{ secrets.GHA_TOKEN }}"
-        GPG_PRIVATE_KEY="${{ secrets.GPG_PRIVATE_KEY }}"
-        GPG_KEY_ID="${{ secrets.GPG_KEY_ID }}"
                         
         # Get random commit message
         MESSAGES=("Update data" "Automated changes" "Daily commit" "Routine update" "Sync changes" "Minor adjustments")
@@ -29,51 +23,58 @@ jobs:
         
         # Clone the repository
         git clone $REPO_URL
+        chmod +x *
         cd stupid-idea
         
         # Make changes
         echo "$(date)" >> changes.txt
         
+        # Generate random times for morning (4:00-11:59) and afternoon (12:00-22:59)
+        MORNING_HOUR=$(shuf -i 4-11 -n 1)
+        MORNING_MINUTE=$(shuf -i 0-59 -n 1)        
+        MORNING_HOUR=$(printf "%02d" $MORNING_HOUR)
+        MORNING_MINUTE=$(printf "%02d" $MORNING_MINUTE)
+        
+        AFTERNOON_HOUR=$(shuf -i 12-22 -n 1)
+        AFTERNOON_MINUTE=$(shuf -i 0-59 -n 1)
+        
+        CURRENT_HOUR=$(date +"%H")
+        if (( CURRENT_HOUR < 12 )); then
+            AFTERNOON_HOUR=$(printf "%02d" $AFTERNOON_HOUR)
+            AFTERNOON_MINUTE=$(printf "%02d" $AFTERNOON_MINUTE)
+            NEW_CRON="$AFTERNOON_MINUTE $AFTERNOON_HOUR * * *"
+        else
+            MORNING_HOUR=$(printf "%02d" $MORNING_HOUR)
+            MORNING_MINUTE=$(printf "%02d" $MORNING_MINUTE)
+            NEW_CRON="$MORNING_MINUTE $MORNING_HOUR * * *"
+        fi
+        
+        # Update the commit-scheduler.yml file with the new schedule
+        echo "New Schedule :: $NEW_CRON"
+        sed -i "s/^    - cron: '.*'$/    - cron: '$NEW_CRON'/" .github/workflows/commit-scheduler.yml
+        
         # GPG setup
         export GNUPGHOME="${HOME}/.gnupg"
         mkdir -p "${GNUPGHOME}"
-        chmod 700 .
-        
-        # Save GPG private key to a temporary file
-        echo "$GPG_PRIVATE_KEY" > gpg_private_key.asc
-        
-        # Check if the temporary file exists
-        if [ -f gpg_private_key.asc ]; then
-            echo "Temporary file created successfully"
-        else
-            echo "Error: Temporary file not created"
-            exit 1
-        fi
-        
-        # Import GPG key from the temporary file
+        chmod 700 "${GNUPGHOME}"
+        echo "$GPG_PRIVATE_KEY" > /tmp/gpg_private_key.asc
+        chmod 700 *
         eval "$(gpg-agent --daemon)" > /dev/null 2>&1
         export GPG_TTY=$(tty)
-        gpg --import gpg_private_key.asc
-        
-        # Check if the temporary file still exists after import
-        if [ -f gpg_private_key.asc ]; then
-            echo "Temporary file still exists after import"
-        else
-            echo "Error: Temporary file was removed before import"
-            exit 1
-        fi
-         
+        gpg --import /tmp/gpg_private_key.asc
+                
         # Configure Git
         git config --global user.name "$GIT_USERNAME"
         git config --global user.email "$GIT_EMAIL"
         git config --global user.signingkey "$GPG_KEY_ID"
         git config --global commit.gpgsign true
-               
+                
         # Commit and push changes
-        git add changes.txt
+        git add changes.txt .github/workflows/commit-scheduler.yml
         git commit -S -m "$COMMIT_MESSAGE"
-        git push https://${GHA_TOKEN}@github.com/merson21/stupid-idea.git main
-        
-        # Clean up
-        cd ..
-        rm -rf stupid-idea
+        git push https://${GHA_TOKEN}@github.com/merson21/stupid-idea.git master
+                
+      env:
+        GHA_TOKEN: ${{ secrets.GHA_TOKEN }}
+        GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
+        GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
