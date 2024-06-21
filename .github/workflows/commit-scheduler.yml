@@ -40,6 +40,8 @@ jobs:
         
         # Save GPG private key to a temporary file
         echo "$GPG_PRIVATE_KEY" > /tmp/gpg_private_key.asc
+        echo "Print GPG_PRIVATE_KEY"
+        cat /tmp/gpg_private_key.asc
         chmod 700 *
         
         # Check if the temporary file exists
