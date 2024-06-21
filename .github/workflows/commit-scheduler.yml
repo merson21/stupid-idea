@@ -38,3 +38,6 @@ jobs:
         # git add .
         # git commit -S -m "This commit is signed!"
         # git push https://${GHA_TOKEN}@github.com/merson21/stupid-idea.git main
+      env:
+        GHA_TOKEN: ${{ secrets.GHA_TOKEN }}
+
