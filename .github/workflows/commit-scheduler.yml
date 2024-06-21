@@ -7,18 +7,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    # - name: Checkout
-    #   uses: actions/checkout@v4
-    
     - name: Auto commit
       run: |
         #!/bin/bash 
         
         # Environment Variables
-        REPO_URL="https://github.com/merson21/stupid-idea.git"
+        echo "REPO_URL=https://github.com/$GITHUB_REPOSITORY" >> $GITHUB_ENV
+        echo "Print REPO_URL :: $REPO_URL"
+        # REPO_URL="https://github.com/merson21/stupid-idea.git"
         GIT_USERNAME="merson21"
         GIT_EMAIL="mersontaguiam7@gmail.com"
-        # GPG_PRIVATE_KEY="$(cat secret_key.asc)"
                         
         # Get random commit message
         MESSAGES=("Update data" "Automated changes" "Daily commit" "Routine update" "Sync changes" "Minor adjustments")
@@ -47,11 +45,7 @@ jobs:
         eval "$(gpg-agent --daemon)" > /dev/null 2>&1
         export GPG_TTY=$(tty)
         gpg --import /tmp/gpg_private_key.asc
-        
-
-        # Remove the temporary file
-        # rm /tmp/gpg_private_key.asc    
-        
+                
         # Configure Git
         git config --global user.name "$GIT_USERNAME"
         git config --global user.email "$GIT_EMAIL"
@@ -64,8 +58,11 @@ jobs:
         git push https://${GHA_TOKEN}@github.com/merson21/stupid-idea.git main
         
         # Clean up
-        # cd ..
+        # cd ..      
         # rm -rf stupid-idea
+        
+        # Remove the temporary file
+        # rm /tmp/gpg_private_key.asc    
         
       env:
         GHA_TOKEN: ${{ secrets.GHA_TOKEN }}
