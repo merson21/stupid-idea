@@ -4,7 +4,7 @@
 REPO_URL="https://github.com/merson21/stupid-idea.git"
 GIT_USERNAME="merson21"
 GIT_EMAIL="mersontaguiam7@gmail.com"
-GHA_TOKEN="${{ secrets.GHA_TOKEN }}"
+# GHA_TOKEN="${{ secrets.GHA_TOKEN }}"
 GPG_PRIVATE_KEY="$(cat secret_key.asc)"
 GPG_KEY_ID="20342C64"
                 
@@ -26,7 +26,7 @@ mkdir -p "${GNUPGHOME}"
 chmod 700 "${GNUPGHOME}"
 
 # Save GPG private key to a temporary file
-echo "$GPG_PRIVATE_KEY_CONTENT" > /tmp/gpg_private_key.asc
+echo "$GPG_PRIVATE_KEY" > /tmp/gpg_private_key.asc
 chmod 700 *
 
 # Check if the temporary file exists
