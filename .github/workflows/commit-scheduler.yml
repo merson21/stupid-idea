@@ -1,8 +1,10 @@
 name: Auto Commit
 on:
   schedule:
-    - cron: '0 3 * * *'  
+    - cron: '0 3 * * *'
+    
   workflow_dispatch:
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,10 +33,7 @@ jobs:
         
         # Generate random times for morning (4:00-11:59) and afternoon (12:00-22:59)
         MORNING_HOUR=$(shuf -i 4-11 -n 1)
-        MORNING_MINUTE=$(shuf -i 0-59 -n 1)        
-        MORNING_HOUR=$(printf "%02d" $MORNING_HOUR)
-        MORNING_MINUTE=$(printf "%02d" $MORNING_MINUTE)
-        
+        MORNING_MINUTE=$(shuf -i 0-59 -n 1)                
         AFTERNOON_HOUR=$(shuf -i 12-22 -n 1)
         AFTERNOON_MINUTE=$(shuf -i 0-59 -n 1)
         
