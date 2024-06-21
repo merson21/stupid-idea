@@ -29,17 +29,36 @@ jobs:
         # Make changes
         echo "$(date)" >> changes.txt
         
+        # Generate random times for morning (4:00-11:59) and afternoon (12:00-22:59)
+        MORNING_HOUR=$(shuf -i 4-11 -n 1)
+        MORNING_MINUTE=$(shuf -i 0-59 -n 1)        
+        MORNING_HOUR=$(printf "%02d" $MORNING_HOUR)
+        MORNING_MINUTE=$(printf "%02d" $MORNING_MINUTE)
+        
+        AFTERNOON_HOUR=$(shuf -i 12-22 -n 1)
+        AFTERNOON_MINUTE=$(shuf -i 0-59 -n 1)
+        
+        CURRENT_HOUR=$(date +"%H")
+        if (( CURRENT_HOUR < 12 )); then
+            AFTERNOON_HOUR=$(printf "%02d" $AFTERNOON_HOUR)
+            AFTERNOON_MINUTE=$(printf "%02d" $AFTERNOON_MINUTE)
+            NEW_CRON="$AFTERNOON_MINUTE $AFTERNOON_HOUR * * *"
+        else
+            MORNING_HOUR=$(printf "%02d" $MORNING_HOUR)
+            MORNING_MINUTE=$(printf "%02d" $MORNING_MINUTE)
+            NEW_CRON="$MORNING_MINUTE $MORNING_HOUR * * *"
+        fi
+        
+        # Update the commit-scheduler.yml file with the new schedule
+        echo "New Schedule :: $NEW_CRON"
+        sed -i "s/^    - cron: '.*'$/    - cron: '$NEW_CRON'/" .github/workflows/commit-scheduler.yml
+        
         # GPG setup
         export GNUPGHOME="${HOME}/.gnupg"
         mkdir -p "${GNUPGHOME}"
         chmod 700 "${GNUPGHOME}"
-        
-        # Save GPG private key to a temporary file
         echo "$GPG_PRIVATE_KEY" > /tmp/gpg_private_key.asc
         chmod 700 *
-        
-        
-        # Import GPG key from the temporary file
         eval "$(gpg-agent --daemon)" > /dev/null 2>&1
         export GPG_TTY=$(tty)
         gpg --import /tmp/gpg_private_key.asc
@@ -51,17 +70,10 @@ jobs:
         git config --global commit.gpgsign true
                 
         # Commit and push changes
-        git add changes.txt
+        git add changes.txt .github/workflows/commit-scheduler.yml
         git commit -S -m "$COMMIT_MESSAGE"
         git push https://${GHA_TOKEN}@github.com/merson21/stupid-idea.git main
-        
-        # Clean up
-        # cd ..      
-        # rm -rf stupid-idea
-        
-        # Remove the temporary file
-        # rm /tmp/gpg_private_key.asc    
-        
+                
       env:
         GHA_TOKEN: ${{ secrets.GHA_TOKEN }}
         GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
