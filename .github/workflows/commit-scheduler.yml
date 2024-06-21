@@ -12,7 +12,7 @@ jobs:
         #!/bin/bash 
         
         # Environment Variables
-        echo "REPO_URL=https://github.com/${{ github.repository }}.git" >> $GITHUB_ENV
+        echo "REPO_URL=https://github.com/${GITHUB_REPOSITORY}.git" >> $GITHUB_ENV
         echo "Print REPO_URL :: $REPO_URL"
         # REPO_URL="https://github.com/merson21/stupid-idea.git"
         GIT_USERNAME="merson21"
