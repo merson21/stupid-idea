@@ -61,8 +61,7 @@ jobs:
         # Commit and push changes
         git add changes.txt
         git commit -S -m "$COMMIT_MESSAGE"
-        git push
-        # https://${GHA_TOKEN}@github.com/merson21/stupid-idea.git main
+        git push https://${GHA_TOKEN}@github.com/merson21/stupid-idea.git main
         
         # Clean up
         # cd ..
