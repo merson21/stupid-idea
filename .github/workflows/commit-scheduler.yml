@@ -1,7 +1,7 @@
 name: Auto Commit
 on:
   schedule:
-    - cron: '08 09 * * *'
+    - cron: '09 08 * * *'
     
   workflow_dispatch:
   
